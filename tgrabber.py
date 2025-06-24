@@ -15,7 +15,7 @@ from telethon.tl.types import (
 
 from configs.telegram_config import (
     API_ID, API_HASH, SESSION_STRING,
-    group_username, media_dir_parth, last_dump_file
+    group_username, media_dir_parth,output_dir, last_dump_file
 )
 
 
@@ -162,6 +162,7 @@ def load_last_dump_date(filename=last_dump_file):
 
 def save_last_dump_date(date, filename=last_dump_file):
     try:
+        print("filename=" + filename)
         with open(filename, 'w', encoding='utf-8') as f:
             f.write(date.isoformat())
     except Exception as e:
@@ -173,6 +174,13 @@ async def main():
     client = TelegramClient(session, API_ID, API_HASH)
     await client.start()
     print("Запущен дамп телеграм топика!")
+    os.makedirs(output_dir, exist_ok=True)
+    try:
+        os.chdir(output_dir)
+        print(f"Current working directory changed to: {os.getcwd()}")
+    except OSError as e:
+        print(f"Error changing directory: {e}")
+
 
     group = await client.get_entity(group_username)
     print(f"Группа: {group.title}")
