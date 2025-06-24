@@ -15,7 +15,7 @@ from telethon.tl.types import (
 
 from configs.telegram_config import (
     API_ID, API_HASH, SESSION_STRING,
-    group_username, media_dir_parth,output_dir, last_dump_file
+    group_username, media_dir_path,output_dir, last_dump_file
 )
 
 
@@ -55,7 +55,7 @@ def get_duration(document):
     return getattr(attr, 'duration', 'unknown')
 
 
-async def save_media(client, message, folder=media_dir_parth):
+async def save_media(client, message, folder=media_dir_path):
     os.makedirs(folder, exist_ok=True)
     if not message.media:
         return None
@@ -86,7 +86,9 @@ async def extract_message_data(message, client):
     original_text = message.text or ""
 
     if message.media:
-        path = await save_media(client, message)
+        folder1 = os.path.join(media_dir_path, "topic_" + str(topic_id))
+        os.makedirs(folder1, exist_ok=True)
+        path = await save_media(client, message, folder1)
         media_type = message.media.__class__.__name__.lower()
 
         media_info = {
