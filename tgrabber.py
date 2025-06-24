@@ -210,8 +210,8 @@ async def main():
     print("\nСтатистика топика:")
     for tid, msgs in topic_messages.items():
         print(f"В топике - {tid}: {len(msgs)} сообщений(-я)")
-
-        with open(f"../messages/file_{tid}.txt", "w", encoding="utf-8") as f:
+        os.makedirs(f"downloaded_text/messages_{tid}", exist_ok=True)
+        with open(f"downloaded_text/messages_{tid}/dialogs.txt", "x", encoding="utf-8") as f:
             json.dump({"messages": topic_messages},
                       f, ensure_ascii=False, indent=4, default=json_serial)
 
